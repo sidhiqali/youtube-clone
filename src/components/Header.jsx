@@ -1,34 +1,106 @@
-import React, {useState, useContext } from 'react'
-import { Link,useLocation,useNavigate } from 'react-router-dom'
-import ytLogo from '../images/yt-logo.png'
-import ytLogoMobile from '../images/yt-logo-mobile.png'
-import {SlMenu} from 'react-icons/sl'
-import {IoIoSearch} from 'react-icons/io'
-import {RiVIdeoAddLine} from 'react-icons/ri'
-import {FiBell} from 'react-icons/fi'
-import {CgClose} from 'react-icons/cg'
-import { Context } from '../context/contextApi'
-import Loader from '../shared/Loader'
- 
-function Header() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const {loading,mobileMenu,setMobileMenu} = useContext(Context)
-  const navigate = useNavigate()
+import React, { useState, useContext } from 'react';
+import {
+  Link,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import ytLogo from '../images/yt-logo.png';
+import ytLogoMobile from '../images/yt-logo-mobile.png';
+import { SlEnvolope } from 'react-icons/sl';
+import { IoIosSearch } from 'react-icons/io';
+import { RiVideoAddLine } from 'react-icons/ri';
+import { FiBell, FiMenu } from 'react-icons/fi';
+import { CgCloseO } from 'react-icons/cg';
+import { MdOutlineMic } from 'react-icons/md';
+import { Context } from '../context/contextApi';
+import Loader from '../shared/Loader';
 
-  const searchQueryHandler = (e)=>{
-    if((e?.key === 'Enter' || e === 'searchButton' ) && searchQuery?.length > 0 ) 
-    {
-      navigate(`/searchResult/${searchQuery}`)
+function Header() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const { loading, mobileMenu, setMobileMenu } = useContext(Context);
+
+  const navigate = useNavigate();
+
+  const searchQueryHandler = (e) => {
+    if (
+      (e?.key === 'Enter' || e === 'searchButton') &&
+      searchQuery?.length > 0
+    ) {
+      navigate(`/searchResult/${searchQuery}`);
     }
-  }
-  const mobileToggleMenu = ()=>{
-      setMobileMenu(!mobileMenu)
-  }
+  };
+  const mobileToggleMenu = () => {
+    setMobileMenu(!mobileMenu);
+  };
+
+  const { pathname } = useLocation();
+  const pageName = pathname?.split('/').filter(Boolean)?.[0];
   return (
-    <div>
-      Header
+    <div className='sticky top-0 z-10 flex flex-row items-center justify-between h-14 px-4 md:px-5 bg-white dark:bg-black'>
+      {loading && <Loader />}
+      <div className='flex h-5 items-center'>
+        {pageName !== 'video' && (
+          <div
+            className='flex md:hidden mr-2 md:mr-6 cursor-pointer items-center justify-center h-10 w-10 rounded-full hover:bg-[#303030]-[0.6]'
+            onClick={mobileToggleMenu}
+          >
+            {mobileMenu ? (
+              <CgCloseO className='text-white text-xl' />
+            ) : (
+              <FiMenu className='text-white text-xl' />
+            )}
+          </div>
+        )}
+        <Link className='flex h-5 items-center' to='/'>
+          <img
+            className='h-full hidden dark:md:block'
+            src={ytLogo}
+            alt='Youtube'
+          />
+          <img className='h-full md:hidden' src={ytLogoMobile} alt='Youtube' />
+        </Link>
+      </div>
+      <div className='group flex items-center'>
+        <div className='flex text-white h-10 ml-10 md:pl-5 border border-[#303030] rounded-l-3xl group-focus-within:border-blue-500 md:group-focus-within:ml-5  md:group-focus-within:pl-0'>
+          <div className='w-10 items-center justify-center hidden group-focus-within:md:flex'>
+            <IoIosSearch className='text-white text-xl' />
+          </div>
+          <input
+            type='text'
+            placeholder='Search'
+            className='bg-transparent outline-none text-white pr-5 pl-5 md:pl-0 md:group-focus-within:pl-0 md:w-64 lg:w-[500px]'
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyUp={searchQueryHandler}
+            value={searchQuery}
+          />
+        </div>
+        <button className='w-[35px] md:w-[50px] h-10  flex items-center justify-center border border-l-0 border-[#303030] rounded-r-3xl bg-white/[0.1]'>
+          <IoIosSearch className='text-white text-xl' />
+        </button>
+        <div className='flex bg-[#121212] items-center ml-2 justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'>
+            <MdOutlineMic className='text-white text-xl cursor-pointer' />
+          </div>
+      </div>
+      <div className='flex items-center'>
+        <div className='hidden md:flex items-center'>
+          <div className='flex items-center justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'>
+            <RiVideoAddLine className='text-white text-xl cursor-pointer' />
+          </div>
+          <div className='flex items-center ml-2 justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'>
+            <FiBell className='text-white text-xl cursor-pointer' />
+          </div>
+          <div className='flex justify-center h-7 w-7 overflow-hidden rounded-full md:ml-4 '>
+            <img
+              src='https://xsgames.co/randomusers/avatar.php?g=male'
+              alt=''
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;

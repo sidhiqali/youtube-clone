@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 function Loader() {
   return (
-    <div>Loader</div>
-  )
+    <div className='load-bar'>
+      <div className='bar'></div>
+      <div className='bar'></div>
+      <div className='bar'></div>
+    </div>
+  );
 }
 
-export default Loader
+export default Loader;

@@ -37,7 +37,7 @@ function LeftNav() {
                 text={item.type === 'home' ? 'Home' : item.name}
                 icon={item.icon}
                 action={() => {
-                  clickHandler(item.name, item.type);
+                  handleClick(item.name, item.type);
                   navigate('/');
                 }}
                 className={`${
@@ -50,7 +50,7 @@ function LeftNav() {
         })}
         <hr className='my-5 border-white/[0.2]' />
         <div className='text-white/[0.5] text-[12px]'>
-          Clone by: JS Dev Hindi
+          Clone by Ali
         </div>
       </div>
     </div>

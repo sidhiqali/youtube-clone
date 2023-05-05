@@ -37,6 +37,7 @@ function Header() {
   };
   const mobileToggleMenu = () => {
     setMobileMenu(!mobileMenu);
+    console.log(mobileMenu);
   };
   const handleSignIn = () => {
     signInWithPopup(auth, provider)

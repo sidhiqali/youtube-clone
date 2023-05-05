@@ -32,12 +32,12 @@ function LeftNav() {
       <div className='flex px-5 flex-col'>
         {categories.map((item) => {
           return (
-            <React.Fragment key={item.id}>
+            <React.Fragment key={item.name}>
               <LeftNavMenuItem
                 text={item.type === 'home' ? 'Home' : item.name}
                 icon={item.icon}
                 action={() => {
-                  handleClick(item.name, item.type);
+                  clickHandler(item.name, item.type);
                   navigate('/');
                 }}
                 className={`${
@@ -48,9 +48,11 @@ function LeftNav() {
             </React.Fragment>
           );
         })}
+        <hr className='my-5 border-white/[0.2]' />
+        <div className='text-white/[0.5] text-[12px]'>
+          Clone by: JS Dev Hindi
+        </div>
       </div>
-      <hr className='my-5 border-white/[0.2]' />
-      <div className='text-white/[0.5] text-[12px] ml-11'>Clone By Ali</div>
     </div>
   );
 }

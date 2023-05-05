@@ -11,7 +11,7 @@ import { RiLightbulbLine, RiFeedbackLine } from 'react-icons/ri';
 import { FiSettings, FiHelpCircle } from 'react-icons/fi';
 
 export const categories = [
-  { id:1, name: 'New', icon: <AiFillHome />, type: 'home' },
+  { id:1, name: 'Malayalam', icon: <AiFillHome />, type: 'home' },
   { id:2, name: 'Trending', icon: <MdLocalFireDepartment />, type: 'category' },
   { id:3, name: 'Music', icon: <CgMusicNote />, type: 'category' },
   { id:4, name: 'Films', icon: <FiFilm />, type: 'category' },

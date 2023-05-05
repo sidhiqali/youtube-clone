@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import ytLogo from '../images/yt-logo.png';
 import ytLogoMobile from '../images/yt-logo-mobile.png';
-import { SlEnvolope } from 'react-icons/sl';
+
 import { IoIosSearch } from 'react-icons/io';
 import { RiVideoAddLine } from 'react-icons/ri';
 import { FiBell, FiMenu } from 'react-icons/fi';
@@ -15,14 +15,18 @@ import { CgCloseO } from 'react-icons/cg';
 import { MdOutlineMic } from 'react-icons/md';
 import { Context } from '../context/contextApi';
 import Loader from '../shared/Loader';
+import { auth, provider } from '../Firebase/config';
+import { signInWithPopup,signOut } from 'firebase/auth';
 
 function Header() {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const { loading, mobileMenu, setMobileMenu } = useContext(Context);
+  const [profile, setProfile] = useState('');
+  const {setLoading, loading, mobileMenu, setMobileMenu } = useContext(Context);
 
   const navigate = useNavigate();
-
+  const handleSearch = () => {
+    searchQuery?.length > 0 && navigate(`/searchResult/${searchQuery}`);
+  };
   const searchQueryHandler = (e) => {
     if (
       (e?.key === 'Enter' || e === 'searchButton') &&
@@ -34,7 +38,24 @@ function Header() {
   const mobileToggleMenu = () => {
     setMobileMenu(!mobileMenu);
   };
-
+  const handleSignIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+        setProfile(result?.user?.photoURL);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleSignOut = () => {
+    setLoading(true);
+    signOut(auth);
+    console.log(signOut);
+    setProfile('');
+    setLoading(false);
+    navigate('/');
+  };
   const { pathname } = useLocation();
   const pageName = pathname?.split('/').filter(Boolean)?.[0];
   return (
@@ -77,11 +98,11 @@ function Header() {
           />
         </div>
         <button className='w-[35px] md:w-[50px] h-10  flex items-center justify-center border border-l-0 border-[#303030] rounded-r-3xl bg-white/[0.1]'>
-          <IoIosSearch className='text-white text-xl' />
+          <IoIosSearch onClick={handleSearch} className='text-white text-xl' />
         </button>
         <div className='flex bg-[#121212] items-center ml-2 justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'>
-            <MdOutlineMic className='text-white text-xl cursor-pointer' />
-          </div>
+          <MdOutlineMic className='text-white text-xl cursor-pointer' />
+        </div>
       </div>
       <div className='flex items-center'>
         <div className='hidden md:flex items-center'>
@@ -89,15 +110,21 @@ function Header() {
             <RiVideoAddLine className='text-white text-xl cursor-pointer' />
           </div>
           <div className='flex items-center ml-2 justify-center h-10 w-10 rounded-full hover:bg-[#303030]/[0.6]'>
-            <FiBell className='text-white text-xl cursor-pointer' />
-          </div>
-          <div className='flex justify-center h-7 w-7 overflow-hidden rounded-full md:ml-4 '>
-            <img
-              src='https://xsgames.co/randomusers/avatar.php?g=male'
-              alt=''
+            <FiBell
+              onClick={handleSignOut}
+              className='text-white text-xl cursor-pointer'
             />
           </div>
         </div>
+        {profile ? (
+          <div className='flex justify-center h-7 w-7 overflow-hidden rounded-full md:ml-4 '>
+            <img  src={profile} alt='' />
+          </div>
+        ) : (
+          <button onClick={handleSignIn} className='bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded-full'>
+            SignIn
+          </button>
+        )}
       </div>
     </div>
   );

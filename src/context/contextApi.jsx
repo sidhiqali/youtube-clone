@@ -6,7 +6,7 @@ export const Context = createContext();
 export const AppContext = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState(false);
-  const [selectCategories, setSelectCategories] = useState('New');
+  const [selectCategories, setSelectCategories] = useState('Malayalam');
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
